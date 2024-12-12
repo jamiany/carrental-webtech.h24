@@ -1,0 +1,33 @@
+networks:
+  dev:
+
+services:
+  apache:
+    build:
+      context: ./apache
+      dockerfile: apache.dockerfile
+    hostname: 'apache.container'
+    container_name: 'apache'
+    volumes: 
+      - ./www:/var/www/html/
+    environment: 
+      - PROJECT_DIR=/var/www/html
+    ports: 
+      - 80:80
+    depends_on:
+      - php_fpm
+    networks:
+      - dev
+
+  php_fpm:
+    build:
+      context: ./php-fpm
+      dockerfile: php.dockerfile
+    hostname: 'fpm.container'
+    container_name: 'fpm'
+    volumes: 
+      - ./www:/var/www/html/
+    ports:
+      - 9000:9000
+    networks:
+      - dev
