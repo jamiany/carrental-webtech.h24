@@ -14,10 +14,7 @@
         if($params['operation'] == 'list'){
             $resultArray = array();
             $result = $conn->query("SELECT * FROM fahrzeuge");
-            while($row = $result->fetch_assoc()) { 
-                $resultArray[] = $row;
-            }
-            
+            while($row = $result->fetch_assoc()) { $resultArray[] = $row; }
             echo json_encode($resultArray);
             return;
         }
