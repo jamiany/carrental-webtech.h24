@@ -21,9 +21,18 @@
         </div>
         <div class="w3-container w3-margin-top">
             <h1 class="w3-center">Autovermietung</h1>
-            <div v-if="carList != null" v-for="item in carList">
+            <!-- <div v-if="carList != null" v-for="item in carList">
                 <div class="w3-card w3-hover-shadow w3-padding w3-margin w3-auto"><p>{{ item.name }} {{ item.modell }}</p></div>
-            </div>
+            </div> -->
+
+            <ul class="w3-ul w3-card-4">
+                <li class="w3-bar" v-if="carList != null" v-for="item in carList">
+                    <div class="w3-bar-item">
+                    <span class="w3-large">{{item.name}}</span><br />
+                    <span>{{item.modell}}</span>
+                    </div>
+                </li>
+            </ul> 
         </div>
     </main>
     <script src="js/main.js"></script>

@@ -20,7 +20,7 @@ ADD ./php.ini-development /usr/local/etc/php/php.ini
 # docker run -it --rm php:7.4-fpm-alpine php -m
 RUN apk add --no-cache freetds \
     freetds-dev \
-    && docker-php-ext-install bcmath \
+    && docker-php-ext-install bcmath mysqli \
     pdo_mysql \
     pdo_dblib
 
