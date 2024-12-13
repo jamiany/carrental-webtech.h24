@@ -1,0 +1,9 @@
+.w3-tag {
+    border-radius: 20px;
+}
+
+.w3-card {
+    box-shadow: none;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+}
