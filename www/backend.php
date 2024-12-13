@@ -18,23 +18,28 @@
             echo json_encode($resultArray);
             return;
         }
-    } else if($method == 'POST'){
-        // if($params['operation'] == 'book'){
-        //     $json = json_decode($body)
-        //     if (empty($json['benutzer_name']) || empty($json['fahrzeug_id']) || empty($json['dauer']) || empty($json['date'])) {
-        //         echo json_encode(["status" => "error", "message" => "Alle Felder sind erforderlich"]);
-        //         exit;
-        //     }
-
-        //     $result = $conn->query("SELECT id FROM fahrzeuge WHERE id = '$json['fahrzeug_id']' AND verfuegbar = 1 LIMIT 1");
-        //     if ($result->num_rows > 0) {
-        //         $fahrzeug = $result->fetch_assoc();
-        //         $conn->query("INSERT INTO buchungen (benutzer_name, fahrzeug_id, datum, dauer) VALUES ({$json['benutzer_name']}, {$fahrzeug['id']}, {$json['datum']}, {$json['dauer']})");
-        //         echo json_encode(["status" => "success", "message" => "Buchung erfolgreich", "buchungsnummer" => $conn->insert_id]);
-        //     } else {
-        //         echo json_encode(["status" => "error", "message" => "Keine Fahrzeuge verfügbar"]);
-        //     }
-        // }
+    } elseif($method == 'POST'){
+        if($params['operation'] == 'book'){
+            $json = json_decode($body, true);
+            if (empty($json['benutzer_name']) || empty($json['fahrzeug_id']) || empty($json['dauer']) || empty($json['date'])) {
+                http_response_code(400);
+                echo json_encode(["status" => "error", "message" => "Alle Felder sind erforderlich"]);
+                exit;
+            }
+            $result = $conn->query("SELECT id FROM fahrzeuge WHERE id = {$json["fahrzeug_id"]} AND verfuegbar = 1 LIMIT 1;");
+            if ($result->num_rows > 0) {
+                $fahrzeug = $result->fetch_assoc();
+                $insert_result = $conn->query("INSERT INTO buchungen (benutzer_name, fahrzeug_id, datum, dauer) VALUES ('{$json['benutzer_name']}', {$json['fahrzeug_id']}, '{$json['date']}', {$json['dauer']});");
+                if($insert_result){
+                    echo json_encode(["status" => "success", "message" => "Buchung erfolgreich", "buchungsnummer" => $conn->insert_id, "result" => $insert_result]);
+                } else {
+                    http_response_code(500);
+                    echo "Es gab einen Fehler beim Speichern";
+                }
+            } else {
+                echo json_encode(["status" => "error", "message" => "Keine Fahrzeuge verfügbar"]);
+            }
+        }
     }
 
     $conn->close();

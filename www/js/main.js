@@ -29,7 +29,16 @@ createApp({
             this.route = path;
             this.param = param;
         },
-        
+        book() {
+            fetch('/backend.php?operation=book', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ benutzer_name: this.name, fahrzeug_id: +this.param.id, date: this.datum, dauer: this.dauer })
+            }).then()
+        }
     },
     created: function() {
         fetch('/backend.php?operation=list')
