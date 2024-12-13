@@ -6,10 +6,11 @@
 <link rel="stylesheet" href="/css/main.css">
 <meta charset="utf-8">
 <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31"></script>
+
 <body>
     <main id="app" class="w3-margin-bottom">
         <div class="w3-bar w3-black">
-            <a href="#" class="w3-bar-item w3-button">Autovermietung</a>
+            <a href="#" class="w3-bar-item w3-button" v-on:click="() => setroute('')">Autovermietung</a>
             <a href="#" class="w3-bar-item w3-button w3-hide-small">Link 1</a>
             <a href="#" class="w3-bar-item w3-button w3-hide-small">Link 2</a>
             <a href="#" class="w3-bar-item w3-button w3-hide-small">Link 3</a>
@@ -21,20 +22,58 @@
             <a href="#" class="w3-bar-item w3-button">Link 2</a>
             <a href="#" class="w3-bar-item w3-button">Link 3</a>
         </div>
-        <div class="w3-container w3-content w3-margin-top">
-            <h1 class="w3-center w3-margin-bottom">Autovermietung</h1>
-
-            <ul class="w3-ul w3-card">
-                <li class="w3-bar" v-if="carList != null" v-for="item in carList">
-                    <span class="w3-bar-item w3-button w3-right">{{item.jahrgang}}</span>
-                    <div class="w3-bar-item">
-                        <span class="w3-large">{{item.marke}} <span v-if="item.verfuegbar == '1'" class="w3-tag w3-green w3-small">Verfügbar</span><span v-if="item.verfuegbar != '1'" class="w3-tag w3-red w3-small">Nicht Verfügbar</span></span><br />
-                        <span>{{item.modell}}</span>
+        <div id="main-content" class="w3-container w3-content w3-margin-top">
+            <template v-if="route == ''">
+                <h1 class="w3-center w3-margin-bottom">Autovermietung</h1>
+                <ul class="w3-ul w3-card">
+                    <li type="button" v-on:click="() => setroute('selected-car', item)" class="w3-bar clickable"
+                        v-if="carList != null" v-for="item in carList">
+                        <span class="w3-bar-item w3-button w3-right">{{item.jahrgang}}</span>
+                        <div class="w3-bar-item">
+                            <span class="w3-large">{{item.marke}} <span v-if="item.verfuegbar == '1'"
+                                    class="w3-tag w3-green w3-small">Verfügbar</span><span v-if="item.verfuegbar != '1'"
+                                    class="w3-tag w3-red w3-small">Nicht Verfügbar</span></span><br />
+                            <span>{{item.modell}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </template>
+            <template v-if="route == 'selected-car'">
+                <div class="w3-panel w3-border w3-border-red w3-pale-red w3-round-large" v-if="param.verfuegbar != '1'">
+                    <h1>Nicht verfügbar</h1>
+                    <p>Das Auto ist leider schon ausgebucht. Versuchen Sie später einmal.</p>
+                </div>
+                <div v-if="param.verfuegbar == '1'">
+                    <h1 class="w3-center w3-margin-bottom">Jetzt buchen</h1>
+                    <div class="w3-card-4">
+                        <header class="w3-container w3-light-grey">
+                            <h3>{{param.marke}}, {{param.modell}} ({{param.jahrgang}})</h3>
+                        </header>
+                        <div class="w3-container">
+                            <div class="w3-margin-top">
+                                <label>Name</label>
+                                <input v-model="name" class="w3-input w3-border w3-round-large" type="text" />
+                            </div>
+                            <div class="w3-margin-top">
+                                <label>Datum</label>
+                                <input v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
+                            </div>
+                            <div class="w3-margin-top">
+                                <label>Dauer {{dauer}} Monate</label>
+                                <input v-model="dauer" class="w3-input w3-border w3-round-large" type="range" min="1"
+                                    max="12" step="1" />
+                            </div>
+                            <hr>
+                            <p>Buchen unter {{name}} am {{datum}} für {{dauer}} Monate</p>
+                        </div>
+                        <button class="w3-button w3-block w3-green">+ Buchen</button>
                     </div>
-                </li>
-            </ul> 
+                </div><br /><br />
+                <a v-on:click="() => setroute('', null)" class="w3-margin-top clickable w3-text-blue">Zürick</a>
+            </template>
         </div>
     </main>
     <script src="js/main.js"></script>
 </body>
+
 </html>

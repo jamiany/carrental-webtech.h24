@@ -2,8 +2,18 @@ const { createApp, ref } = Vue
 
 createApp({
     data: function() {
+        let rentalDate = new Date();
+        rentalDate.setDate(rentalDate.getDate() + 1);
+        let rentalDateString = `${rentalDate.getFullYear()}-${rentalDate.getMonth()}-${rentalDate.getDate()}`
+
         return {
-            carList: null
+            carList: null,
+            route: '',
+            param: null,
+            currentInput: {},
+            name: '',
+            datum: rentalDateString,
+            dauer: 1
         }
     },
     methods: {
@@ -14,7 +24,12 @@ createApp({
             } else {
                 x.className = x.className.replace(" w3-show", "");
             }
-        }
+        },
+        setroute(path, param = null){
+            this.route = path;
+            this.param = param;
+        },
+        
     },
     created: function() {
         fetch('/backend.php?operation=list')
