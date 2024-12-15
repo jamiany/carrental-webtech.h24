@@ -43,7 +43,8 @@ createApp({
                 },
                 body: JSON.stringify({ benutzer_name: this.name, fahrzeug_id: +this.param.id, date: this.datum, dauer: this.dauer })
             }).then(x => {
-                buchungsnummer = x.buchungsnummer;
+                console.log(x);
+                this.buchungsnummer = x.response?.buchungsnummer;
                 document.getElementById('confirmBooking').style.display = 'block';
             })
             .catch(error => this.showHttpErrorDialog(error));
@@ -52,7 +53,7 @@ createApp({
             this.benutzer_id = this.getCookie('user');
             fetch('/backend?operation=bookings')
                 .then(r => r.json())
-                .then(l => this.bookings = l)
+                .then(l => this.bookings = l.response)
                 .catch(error => this.showHttpErrorDialog(error));
         },
         getCookie(cname) {
@@ -81,7 +82,7 @@ createApp({
     created: function() {
         fetch('/backend?operation=list')
             .then(r => r.json())
-            .then(l => this.carList = l)
+            .then(l => this.carList = l.response)
             .catch(error => this.showHttpErrorDialog(error));
         fetch('/backend?operation=initcookie', { method: 'PUT' })
             .then(_ => this.loadBookings())
