@@ -1,4 +1,5 @@
 const { createApp, ref } = Vue
+
 createApp({
     data: function() {
         let rentalDate = new Date();
@@ -20,6 +21,10 @@ createApp({
         }
     },
     methods: {
+        format_date(value) {
+            if (!value) return ''
+            return new Date(value).toLocaleDateString("de-CH");
+        },  
         myFunction() {
             var x = document.getElementById("demo");
             if (x.className.indexOf("w3-show") == -1) {

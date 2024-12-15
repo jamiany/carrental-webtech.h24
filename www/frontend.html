@@ -81,7 +81,7 @@
                                     max="12" step="1" />
                             </div>
                             <hr>
-                            <p>Buchen unter {{name}} am {{datum}} für {{dauer}} Monate</p>
+                            <p>Buchen unter {{name}} am {{format_date(datum)}} für {{dauer}} Monate</p>
                         </div>
                         <button class="w3-button w3-block w3-green" v-on:click="book">+ Buchen</button>
                     </div>
@@ -96,8 +96,10 @@
                         v-if="bookings != null" v-for="item in bookings">
                         <span class="w3-bar-item w3-button w3-right">{{item.dauer}} Monate</span>
                         <div class="w3-bar-item">
-                            <span class="w3-large">{{carList.find(x => x.id == item.fahrzeug_id).marke}}</span><br/>
-                            <span>{{item.datum}} - {{item.benutzer_name}}</span>
+                            <span class="w3-large">{{carList.find(x => x.id == item.fahrzeug_id).marke}}</span><br />
+                            <span>Abholen am {{format_date(item.datum)}} durch {{item.benutzer_name}}</span><br />
+                            <span class="w3-tag w3-pale-red w3-small">Mietende: {{format_date(item.expire_date)}}</span><br/>
+                            <span class="w3-tag w3-green w3-small">gebucht: {{format_date(item.created)}}</span>
                         </div>
                     </li>
                 </ul>
