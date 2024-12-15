@@ -17,6 +17,7 @@ CREATE TABLE buchungen (
   fahrzeug_id INT,
   datum DATETIME,
   dauer INT,
+  benutzer_id INT,
   FOREIGN KEY (fahrzeug_id) REFERENCES fahrzeuge(id)
 );
 

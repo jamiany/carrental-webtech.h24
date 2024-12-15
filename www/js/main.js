@@ -8,12 +8,14 @@ createApp({
 
         return {
             carList: null,
+            navigationItems: [{display: 'Information zur Webseite', route: 'information'}, {display: 'Buchen (Eingabebereich)', route: 'eingabe'}, {display: 'getätigte Buchungen (Ausgabebereich)', route: 'ausgabe'}],
             route: '',
             param: null,
             currentInput: {},
             name: '',
             datum: rentalDateString,
-            dauer: 1
+            dauer: 1,
+            buchungsnummer: ''
         }
     },
     methods: {
@@ -30,20 +32,24 @@ createApp({
             this.param = param;
         },
         book() {
-            fetch('/backend.php?operation=book', {
+            fetch('/backend?operation=book', {
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ benutzer_name: this.name, fahrzeug_id: +this.param.id, date: this.datum, dauer: this.dauer })
-            }).then()
+            }).then(x => {
+                buchungsnummer = x.buchungsnummer;
+                document.getElementById('confirmBooking').style.display = 'block';
+            })
         }
     },
     created: function() {
-        fetch('/backend.php?operation=list')
+        fetch('/backend?operation=list')
             .then(r => r.json())
             .then(l => this.carList = l)
+        fetch('/backend?operation=initcookie', { method: 'PUT' }).then()
     },
     setup() {
         const message = ref('Hello vue!')

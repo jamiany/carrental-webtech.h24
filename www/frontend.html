@@ -6,25 +6,41 @@
 <link rel="stylesheet" href="/css/main.css">
 <meta charset="utf-8">
 <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31"></script>
-
 <body>
     <main id="app" class="w3-margin-bottom">
         <div class="w3-bar w3-black">
-            <a href="#" class="w3-bar-item w3-button" v-on:click="() => setroute('')">Autovermietung</a>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small">Link 1</a>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small">Link 2</a>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small">Link 3</a>
-            <button class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
-                v-on:click="myFunction">&#9776;</button>
+            <a type="button" class="w3-bar-item w3-button" v-on:click="() => setroute('')">Autovermietung</a>
+            <a type="button" v-on:click="() => setroute(item.route)" class="w3-bar-item w3-button w3-hide-small" v-for="item in navigationItems">{{item.display}}</a>
+            <button class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" v-on:click="myFunction">&#9776;</button>
         </div>
         <div id="demo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium">
-            <a href="#" class="w3-bar-item w3-button">Link 1</a>
-            <a href="#" class="w3-bar-item w3-button">Link 2</a>
-            <a href="#" class="w3-bar-item w3-button">Link 3</a>
+            <a type="button" v-on:click="() => setroute(item.route)" class="w3-bar-item w3-button" v-for="item in navigationItems">{{item.display}}</a>
         </div>
         <div id="main-content" class="w3-container w3-content w3-margin-top">
             <template v-if="route == ''">
-                <h1 class="w3-center w3-margin-bottom">Autovermietung</h1>
+                <h1 class="w3-center w3-margin-bottom">Autovermietung - Navigation</h1>
+                <p class="w3-center w3-large">Klicken Sie einen Abschnitt</p>
+                <ul class="w3-ul w3-card">
+                    <li type="button" v-on:click="() => setroute(item.route)" class="w3-bar clickable" v-for="item in navigationItems">
+                        <div class="w3-bar-item">
+                            <span class="w3-large">{{item.display}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </template>
+            <template v-if="route == 'information'">
+                <h1 class="w3-center w3-margin-bottom">Autovermietung - Information</h1>
+                <p class="w3-center w3-large">Willkomen zur Autovermietung. Projekt WEBT HS24 vom Jamian Rajakone.</p>
+                <p>Die Applikation hat 4 Abschnitte. In der Navigation sieht man alle verfügbare Seitenabschnitte. Hier hat man den Auswahl zwischen Buchung - Eingabenbereich, getätigte Buchungen - Ausgabebereich, Information (aktueller Abschnitt). </p>
+                <h2>Buchung - Eingabebereich</h2>
+                <p>Hier wählt man zuerst ein Auto aus, welches man buchen möchte. Wenn man klickt, wird man zu einer Abschnitt weitergeleitet, wo man seine Details zur Buchung eingeben kann und danach abschliessen kann.</p>
+                <img src="img/booking.gif" class="w3-image" />
+                <h2>Buchung - Ausgabebereich</h2>
+                <p>Hier sieht man alle getätigte Buchungen. Diese Buchungen werden abhängig von der gespeicherten Cookie angezeigt.</p>
+            </template>
+            <template v-if="route == 'eingabe'">
+                <h1 class="w3-center w3-margin-bottom">Autovermietung - Buchen (Eingabe)</h1>
+                <p class="w3-center w3-large">Wählen Sie ein Auto für die Buchung aus</p>
                 <ul class="w3-ul w3-card">
                     <li type="button" v-on:click="() => setroute('selected-car', item)" class="w3-bar clickable"
                         v-if="carList != null" v-for="item in carList">
@@ -73,7 +89,20 @@
             </template>
         </div>
     </main>
+    <div id="confirmBooking" class="w3-modal">
+        <div class="w3-modal-content w3-card-4">
+          <header class="w3-container w3-green"> 
+            <span onclick="document.getElementById('confirmBooking').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>Erfolgreich gebucht</h2>
+          </header>
+          <div class="w3-container w3-padding">
+            <a type="button" class="w3-text-blue clickable" v-on:click="() => {
+                document.getElementById('confirmBooking').style.display = 'none';
+                setroute('ausgabe')
+            }">Zur getätigten Buchungen</a>
+          </div>
+        </div>
+      </div>
     <script src="js/main.js"></script>
 </body>
-
 </html>
