@@ -72,7 +72,8 @@ createApp({
         fetch('/backend?operation=list')
             .then(r => r.json())
             .then(l => this.carList = l)
-        fetch('/backend?operation=initcookie', { method: 'PUT' }).then(_ => this.loadBookings())
+        fetch('/backend?operation=initcookie', { method: 'PUT' })
+            .then(_ => this.loadBookings())
     },
     setup() {
         const message = ref('Hello vue!')
