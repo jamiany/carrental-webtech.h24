@@ -104,12 +104,6 @@ createApp({
             ctx.fillRect(100, 80, 40, 30);
             ctx.fillRect(150, 80, 40, 30);
             ctx.beginPath();
-            ctx.moveTo(30, 180);
-            ctx.lineTo(270, 180);
-            ctx.strokeStyle = 'gray';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.beginPath();
             ctx.arc(50, 125, 10, 0, Math.PI * 2, true);
             ctx.fillStyle = 'yellow';
             ctx.fill();
@@ -117,14 +111,6 @@ createApp({
             ctx.arc(250, 125, 10, 0, Math.PI * 2, true);
             ctx.fillStyle = 'yellow';
             ctx.fill();
-            ctx.fillStyle = 'gray';
-            ctx.fillRect(40, 140, 10, 5);
-            ctx.beginPath();
-            ctx.moveTo(50, 115);
-            ctx.lineTo(250, 115);
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = 2;
-            ctx.stroke();
             ctx.fillStyle = 'black';
             ctx.fillRect(120, 110, 20, 5);
             ctx.fillRect(160, 110, 20, 5);
