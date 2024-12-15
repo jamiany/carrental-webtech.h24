@@ -6,6 +6,7 @@
         die(json_encode(["status" => "error", "message" => "Datenbankverbindung fehlgeschlagen"]));
     }
 
+    $current_date = new DateTime('now');
     $method = $_SERVER['REQUEST_METHOD'];
     $body = file_get_contents("php://input");
     parse_str($_SERVER['QUERY_STRING'], $params);
@@ -47,12 +48,15 @@
             $result = $conn->query("SELECT id FROM fahrzeuge WHERE id = {$json["fahrzeug_id"]} AND verfuegbar = 1 LIMIT 1;");
             if ($result->num_rows > 0) {
                 $fahrzeug = $result->fetch_assoc();
-                $insert_result = $conn->query("INSERT INTO buchungen (benutzer_name, fahrzeug_id, datum, dauer, benutzer_id) VALUES ('{$json['benutzer_name']}', {$json['fahrzeug_id']}, '{$json['date']}', {$json['dauer']}, {$_COOKIE['user']});");
+                $expire_date = new DateTime('now');
+                $expire_date->add(new DateInterval("P0Y{$json['dauer']}M0W0D"));
+                $query_str = "INSERT INTO buchungen (benutzer_name, fahrzeug_id, datum, dauer, benutzer_id, created, expire_date) VALUES ('{$json['benutzer_name']}', {$json['fahrzeug_id']}, '{$json['date']}', {$json['dauer']}, {$_COOKIE['user']}, '{$current_date->format('Y-m-d')}', '{$expire_date->format('Y-m-d')}');";
+                $insert_result = $conn->query($query_str);
                 if($insert_result){
                     actionResult(["status" => "success", "message" => "", "buchungsnummer" => $conn->insert_id]);
                     return;
                 } else {
-                    actionResult(["error" => "Es gab einen Fehler beim Speichern"], 500);
+                    actionResult(["error" => "Es gab einen Fehler beim Speichern", "query" => $query_str], 500);
                     return;
                 }
             } else {
