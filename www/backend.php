@@ -20,16 +20,22 @@
     if($method == 'GET'){
         if($params['operation'] == 'list'){
             $resultArray = array();
-            $result = $conn->query("SELECT * FROM fahrzeuge");
+            $stmt = $conn->prepare("SELECT * FROM fahrzeuge");
+            $stmt->execute();
+            $result = $stmt->get_result();
             while($row = $result->fetch_assoc()) { $resultArray[] = $row; }
             actionResult($resultArray);
             return;
         } elseif($params['operation'] == 'bookings'){
             if(!isset($_COOKIE['user'])){
-                die(json_encode(["status" => "error", "message" => "Cookie wurde nicht initialisiert"]));
+                actionResult(["status" => "error", "message" => "Cookie wurde nicht initialisiert"]);
+                return;
             }
             $resultArray = array();
-            $result = $conn->query("SELECT * FROM buchungen where benutzer_id = {$_COOKIE['user']}");
+            $stmt = $conn->prepare("SELECT * FROM buchungen where benutzer_id = ?");
+            $stmt->bind_param("s", $_COOKIE['user']);
+            $stmt->execute();
+            $result = $stmt->get_result();
             while($row = $result->fetch_assoc()) { $resultArray[] = $row; }
             actionResult($resultArray);
             return;
@@ -45,13 +51,25 @@
                 actionResult(["status" => "error", "message" => "Alle Felder sind erforderlich"], 400);
                 return;
             }
-            $result = $conn->query("SELECT id FROM fahrzeuge WHERE id = {$json["fahrzeug_id"]} AND verfuegbar = 1 LIMIT 1;");
+            $stmt = $conn->prepare("SELECT id FROM fahrzeuge WHERE id = ? AND verfuegbar = 1 LIMIT 1;");
+            $stmt->bind_param("i", $json["fahrzeug_id"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
             if ($result->num_rows > 0) {
                 $fahrzeug = $result->fetch_assoc();
-                $expire_date = new DateTime('now');
-                $expire_date->add(new DateInterval("P0Y{$json['dauer']}M0W0D"));
-                $query_str = "INSERT INTO buchungen (benutzer_name, fahrzeug_id, datum, dauer, benutzer_id, created, expire_date) VALUES ('{$json['benutzer_name']}', {$json['fahrzeug_id']}, '{$json['date']}', {$json['dauer']}, {$_COOKIE['user']}, '{$current_date->format('Y-m-d')}', '{$expire_date->format('Y-m-d')}');";
-                $insert_result = $conn->query($query_str);
+                $_expire_date = new DateTime('now');
+                $_expire_date->add(new DateInterval("P0Y{$json['dauer']}M0W0D"));
+                $query_str = "INSERT INTO buchungen (benutzer_name, fahrzeug_id, datum, dauer, benutzer_id, created, expire_date) VALUES (?, ?, ?, ?, ?, ?, ?);";
+                $stmt_insert = $conn->prepare($query_str);
+                $stmt_insert->bind_param("sisiiss", $benutzer_name, $fahrzeug_id, $datum, $dauer, $benutzer_id, $created, $expire_date);
+                $benutzer_name = $json['benutzer_name'];
+                $fahrzeug_id = $json['fahrzeug_id'];
+                $datum = $json['date'];
+                $dauer = $json['dauer'];
+                $benutzer_id = $_COOKIE['user'];
+                $created = $current_date->format('Y-m-d');
+                $expire_date = $_expire_date->format('Y-m-d');
+                $insert_result = $stmt_insert->execute();
                 if($insert_result){
                     actionResult(["status" => "success", "message" => "", "buchungsnummer" => $conn->insert_id]);
                     return;

@@ -31,6 +31,10 @@ createApp({
         setroute(path, param = null){
             this.route = path;
             this.param = param;
+            window.location.hash = path;
+            if(path == 'ausgabe'){
+                this.loadBookings();
+            }
         },
         book() {
             fetch('/backend?operation=book', {

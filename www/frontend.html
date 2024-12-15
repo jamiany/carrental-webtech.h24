@@ -90,8 +90,7 @@
             </template>
             <template v-if="route == 'ausgabe'">
                 <h1 class="w3-center w3-margin-bottom">Autovermietung - getätigte Buchungen (Ausgabe)</h1>
-                <p class="w3-center w3-large">Klicken Sie auf "Lade Buchungsdaten". Alle Buchungen welche mit dem folgenden Cookie getätigt wurde: user = {{benutzer_id}}</p>
-                <button type="button" class="w3-button w3-black w3-margin-bottom" v-on:click="() => loadBookings()">Lade Buchungsdaten</button>
+                <p class="w3-center w3-large">Alle Buchungen, welche mit dem folgenden Cookie getätigt wurde: user = {{benutzer_id}}</p>
                 <ul class="w3-ul w3-card">
                     <li type="button" class="w3-bar clickable"
                         v-if="bookings != null" v-for="item in bookings">
