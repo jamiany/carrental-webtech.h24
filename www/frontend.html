@@ -74,7 +74,7 @@
                             </div>
                             <div class="w3-margin-top">
                                 <label>Datum</label>
-                                <input id="input_date" v-on:input="validateInputDate"  required="required" v-bind:min="new Date().toISOString().substring(0, 10)" v-bind:max="new Date(new Date().setMonth(new Date().getMonth() + 12)).toISOString().substring(0, 10)" v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
+                                <input id="input_date" v-on:input="validateInputDate"  required="required" v-bind:min="new Date().toISOString().substring(0, 10)" v-bind:max="new Date(new Date().setMonth(new Date().getMonth() + 11)).toISOString().substring(0, 10)" v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
                                 <p id="error_input_date" class="w3-text-red w3-small"></p>
                             </div>
                             <div class="w3-margin-top">
