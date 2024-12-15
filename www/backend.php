@@ -35,7 +35,9 @@
     if($method == 'GET'){
         if($params['operation'] == 'list'){
             $resultArray = array();
-            $stmt = $conn->prepare("SELECT * FROM fahrzeuge");
+            $stmt = $conn->prepare("SELECT * FROM fahrzeuge WHERE verfuegbar = ?");
+            $verfuegbar = 1;
+            $stmt->bind_param("i", $verfuegbar);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_assoc()) { $resultArray[] = $row; }

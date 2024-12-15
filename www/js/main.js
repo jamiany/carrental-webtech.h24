@@ -60,6 +60,9 @@ createApp({
                 console.log(x);
                 this.buchungsnummer = x.response?.buchungsnummer;
                 document.getElementById('confirmBooking').style.display = 'block';
+                this.name = '';
+                this.datum = '';
+                this.dauer = 0;
             })
             .catch(error => this.showHttpErrorDialog(error));
         },

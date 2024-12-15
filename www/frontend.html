@@ -66,7 +66,7 @@
                         <header class="w3-container w3-light-grey">
                             <h3>{{param.marke}}, {{param.modell}} ({{param.jahrgang}})</h3>
                         </header>
-                        <div class="w3-container">
+                        <form id="bookingForm" class="w3-container">
                             <div class="w3-margin-top">
                                 <label>Name</label>
                                 <input id="input_name" v-on:input="validateInputName" required="required" minlength="3" v-model="name" class="w3-input w3-border w3-round-large" type="text" />
@@ -84,7 +84,7 @@
                             </div>
                             <hr>
                             <p>Buchen unter {{name}} am {{format_date(datum)}} für {{dauer}} Monate</p>
-                        </div>
+                        </form>
                         <button v-bind:disabled="!(bookingFormNameValid && bookingFormDateValid && bookingFormDauerValid)" class="w3-button w3-block w3-green" v-on:click="book">+ Buchen</button>
                     </div>
                 </div><br /><br />
@@ -122,7 +122,7 @@
         <div id="httpError" class="w3-modal">
             <div class="w3-modal-content w3-card-4">
               <header class="w3-container w3-red"> 
-                <span onclick="document.getElementById('confirmBooking').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <span onclick="document.getElementById('httpError').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                 <h2>Webservice Fehler</h2>
               </header>
               <div class="w3-container w3-padding">
