@@ -17,6 +17,21 @@
         echo json_encode($result);
     }
 
+    function validateInput($json) {
+        $error = NULL;
+        if(empty($json['benutzer_name']) || strlen($json['benutzer_name']) < 3) {
+            $error = ['error' => "field 'benutzer_name' not set or length is smaller than 3"];
+        } elseif(empty($json['fahrzeug_id']) || !is_numeric($json['fahrzeug_id'])) {
+            $error = ['error' => "field 'fahrzeug_id' not set or has invalid value (not numeric)"];
+        } elseif(empty($json['dauer']) || !is_numeric($json['dauer']) || $json['dauer'] < 1 || $json['dauer'] > 12) {
+            $error = ['error' => "field 'dauer' not set or has invalid value (not numeric) or is not in the range between 1 and 12"];
+        } elseif(empty($json['date']) || ($input_date = strtotime($json['date'])) === false || $input_date < strtotime("now") || $input_date > strtotime("+12 months")) {
+            $error = ['error' => "field 'date' not set or has invalid value (not numeric) or is not in the range between today and in 12 months"];
+        }
+        
+        return $error;
+    }
+
     if($method == 'GET'){
         if($params['operation'] == 'list'){
             $resultArray = array();
@@ -47,10 +62,16 @@
                 return;
             }
             $json = json_decode($body, true);
-            if (empty($json['benutzer_name']) || empty($json['fahrzeug_id']) || empty($json['dauer']) || empty($json['date'])) {
-                actionResult(["status" => "error", "message" => "Alle Felder sind erforderlich"], 400);
+            // if (empty($json['benutzer_name']) || empty($json['fahrzeug_id']) || empty($json['dauer']) || empty($json['date'])) {
+            //     actionResult(["status" => "error", "message" => "Alle Felder sind erforderlich"], 400);
+            //     return;
+            // }
+            $validateError = validateInput($json);
+            if(isset($validateError)){
+                actionResult($validateError, 400);
                 return;
             }
+
             $stmt = $conn->prepare("SELECT id FROM fahrzeuge WHERE id = ? AND verfuegbar = 1 LIMIT 1;");
             $stmt->bind_param("i", $json["fahrzeug_id"]);
             $stmt->execute();
