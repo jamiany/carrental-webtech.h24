@@ -45,6 +45,10 @@ createApp({
             }
         },
         book() {
+            if(!(this.validateInputDate() && this.validateInputDauer() && this.validateInputName())) {
+                return;
+            }
+
             fetch('/backend?operation=book', {
                 method: 'POST',
                 headers: {
