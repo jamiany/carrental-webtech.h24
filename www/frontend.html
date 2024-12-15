@@ -69,21 +69,23 @@
                         <div class="w3-container">
                             <div class="w3-margin-top">
                                 <label>Name</label>
-                                <input v-model="name" class="w3-input w3-border w3-round-large" type="text" />
+                                <input id="input_name" v-on:input="validateInputName" required="required" minlength="3" v-model="name" class="w3-input w3-border w3-round-large" type="text" />
+                                <p id="error_input_name" class="w3-text-red w3-small"></p>
                             </div>
                             <div class="w3-margin-top">
                                 <label>Datum</label>
-                                <input v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
+                                <input id="input_date" v-on:input="validateInputDate"  required="required" v-bind:min="new Date().toISOString().substring(0, 10)" v-bind:max="new Date(new Date().setMonth(new Date().getMonth() + 12)).toISOString().substring(0, 10)" v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
+                                <p id="error_input_date" class="w3-text-red w3-small"></p>
                             </div>
                             <div class="w3-margin-top">
                                 <label>Dauer {{dauer}} Monate</label>
-                                <input v-model="dauer" class="w3-input w3-border w3-round-large" type="range" min="1"
-                                    max="12" step="1" />
+                                <input id="input_dauer" v-on:input="validateInputDauer"  v-model="dauer" class="w3-input w3-border w3-round-large" type="range" min="1" max="12" step="1" required="required" />
+                                <p id="error_input_dauer" class="w3-text-red w3-small"></p>
                             </div>
                             <hr>
                             <p>Buchen unter {{name}} am {{format_date(datum)}} für {{dauer}} Monate</p>
                         </div>
-                        <button class="w3-button w3-block w3-green" v-on:click="book">+ Buchen</button>
+                        <button v-bind:disabled="!(bookingFormNameValid && bookingFormDateValid && bookingFormDauerValid)" class="w3-button w3-block w3-green" v-on:click="book">+ Buchen</button>
                     </div>
                 </div><br /><br />
                 <a v-on:click="() => setroute('', null)" class="w3-margin-top clickable w3-text-blue">Zürick</a>

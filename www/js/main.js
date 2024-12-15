@@ -18,6 +18,9 @@ createApp({
             benutzer_id: '',
             bookings: [],
             httpErrorMsg: '',
+            bookingFormNameValid: false,
+            bookingFormDateValid: true,
+            bookingFormDauerValid: true,
         }
     },
     methods: {
@@ -114,6 +117,27 @@ createApp({
             ctx.fillStyle = 'black';
             ctx.fillRect(120, 110, 20, 5);
             ctx.fillRect(160, 110, 20, 5);
+        },
+        validateInputName() {
+            let inputName = document.getElementById('input_name');
+            let errorElement = document.getElementById('error_input_name');
+            this.bookingFormNameValid = inputName.checkValidity();
+            errorElement.innerText = this.bookingFormNameValid ? '' : inputName.validationMessage;
+            return this.bookingFormNameValid;
+        },
+        validateInputDate() {
+            let inputDate = document.getElementById('input_date');
+            let errorElement = document.getElementById('error_input_date');
+            this.bookingFormDateValid = inputDate.checkValidity();
+            errorElement.innerText = this.bookingFormDateValid ? '' : inputDate.validationMessage;
+            return this.bookingFormDateValid;
+        },
+        validateInputDauer() {
+            let inputDauer = document.getElementById('input_dauer');
+            let errorElement = document.getElementById('error_input_dauer');
+            this.bookingFormDauerValid = inputDauer.checkValidity();
+            errorElement.innerText = this.bookingFormDauerValid ? '' : inputDauer.validationMessage;
+            return this.bookingFormDauerValid;
         }
     },
     created: function() {
