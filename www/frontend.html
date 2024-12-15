@@ -104,18 +104,29 @@
                 </ul>
             </template>
         </div>
-    </main>
-    <div id="confirmBooking" class="w3-modal">
-        <div class="w3-modal-content w3-card-4">
-          <header class="w3-container w3-green"> 
-            <span onclick="document.getElementById('confirmBooking').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <h2>Erfolgreich gebucht</h2>
-          </header>
-          <div class="w3-container w3-padding">
-            <a type="button" class="w3-text-blue clickable" v-on:click="() => setroute('ausgabe')">Zur getätigten Buchungen</a>
-          </div>
+        <div id="confirmBooking" class="w3-modal">
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-green"> 
+                <span onclick="document.getElementById('confirmBooking').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>Erfolgreich gebucht</h2>
+              </header>
+              <div class="w3-container w3-padding">
+                <a type="button" class="w3-text-blue clickable" v-on:click="() => setroute('ausgabe')">Zur getätigten Buchungen</a>
+              </div>
+            </div>
         </div>
-      </div>
+        <div id="httpError" class="w3-modal">
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-red"> 
+                <span onclick="document.getElementById('confirmBooking').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>Webservice Fehler</h2>
+              </header>
+              <div class="w3-container w3-padding">
+                <p>{{httpErrorMsg}}</p>
+              </div>
+            </div>
+        </div>
+    </main>
     <script src="js/main.js"></script>
 </body>
 </html>

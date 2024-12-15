@@ -17,7 +17,8 @@ createApp({
             dauer: 1,
             buchungsnummer: '',
             benutzer_id: '',
-            bookings: []
+            bookings: [],
+            httpErrorMsg: '',
         }
     },
     methods: {
@@ -45,12 +46,14 @@ createApp({
                 buchungsnummer = x.buchungsnummer;
                 document.getElementById('confirmBooking').style.display = 'block';
             })
+            .catch(error => this.showHttpErrorDialog(error));
         },
         loadBookings() {
             this.benutzer_id = this.getCookie('user');
             fetch('/backend?operation=bookings')
                 .then(r => r.json())
                 .then(l => this.bookings = l)
+                .catch(error => this.showHttpErrorDialog(error));
         },
         getCookie(cname) {
             let name = cname + "=";
@@ -66,14 +69,23 @@ createApp({
               }
             }
             return "";
-          }
+        },
+        handleError(response) {
+        },
+        showHttpErrorDialog(msg){
+            console.error(msg);
+            this.httpErrorMsg = msg;
+            document.getElementById('httpError').style.display = "block";
+        }
     },
     created: function() {
         fetch('/backend?operation=list')
             .then(r => r.json())
             .then(l => this.carList = l)
+            .catch(error => this.showHttpErrorDialog(error));
         fetch('/backend?operation=initcookie', { method: 'PUT' })
             .then(_ => this.loadBookings())
+            .catch(error => this.showHttpErrorDialog(error));
     },
     setup() {
         const message = ref('Hello vue!')
