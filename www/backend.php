@@ -18,8 +18,11 @@
             echo json_encode($resultArray);
             return;
         } elseif($params['operation'] == 'bookings'){
+            if(!isset($_COOKIE['user'])){
+                die(json_encode(["status" => "error", "message" => "Cookie wurde nicht initialisiert"]));
+            }
             $resultArray = array();
-            $result = $conn->query("SELECT * FROM fahrzeuge");
+            $result = $conn->query("SELECT * FROM buchungen where benutzer_id = {$_COOKIE['user']}");
             while($row = $result->fetch_assoc()) { $resultArray[] = $row; }
             echo json_encode($resultArray);
             return;

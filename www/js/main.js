@@ -15,7 +15,9 @@ createApp({
             name: '',
             datum: rentalDateString,
             dauer: 1,
-            buchungsnummer: ''
+            buchungsnummer: '',
+            benutzer_id: '',
+            bookings: []
         }
     },
     methods: {
@@ -43,13 +45,34 @@ createApp({
                 buchungsnummer = x.buchungsnummer;
                 document.getElementById('confirmBooking').style.display = 'block';
             })
-        }
+        },
+        loadBookings() {
+            this.benutzer_id = this.getCookie('user');
+            fetch('/backend?operation=bookings')
+                .then(r => r.json())
+                .then(l => this.bookings = l)
+        },
+        getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+              let c = ca[i];
+              while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+              }
+              if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+              }
+            }
+            return "";
+          }
     },
     created: function() {
         fetch('/backend?operation=list')
             .then(r => r.json())
             .then(l => this.carList = l)
-        fetch('/backend?operation=initcookie', { method: 'PUT' }).then()
+        fetch('/backend?operation=initcookie', { method: 'PUT' }).then(_ => this.loadBookings())
     },
     setup() {
         const message = ref('Hello vue!')
