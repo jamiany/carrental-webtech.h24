@@ -1,11 +1,9 @@
 const { createApp, ref } = Vue
-
 createApp({
     data: function() {
         let rentalDate = new Date();
         rentalDate.setDate(rentalDate.getDate() + 1);
         let rentalDateString = `${rentalDate.getFullYear()}-${rentalDate.getMonth()}-${rentalDate.getDate()}`
-
         return {
             carList: null,
             navigationItems: [{display: 'Information zur Webseite', route: 'information'}, {display: 'Buchen (Eingabebereich)', route: 'eingabe'}, {display: 'getätigte Buchungen (Ausgabebereich)', route: 'ausgabe'}],
@@ -77,6 +75,50 @@ createApp({
             console.error(msg);
             this.httpErrorMsg = msg;
             document.getElementById('httpError').style.display = "block";
+        },
+        drawCar() {
+            const canvas = document.getElementById('carCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(50, 100, 200, 50);
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(90, 70, 120, 40);
+            ctx.beginPath();
+            ctx.arc(80, 160, 20, 0, Math.PI * 2, true);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(220, 160, 20, 0, Math.PI * 2, true);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.fillStyle = 'lightblue';
+            ctx.fillRect(100, 80, 40, 30);
+            ctx.fillRect(150, 80, 40, 30);
+            ctx.beginPath();
+            ctx.moveTo(30, 180);
+            ctx.lineTo(270, 180);
+            ctx.strokeStyle = 'gray';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(50, 125, 10, 0, Math.PI * 2, true);
+            ctx.fillStyle = 'yellow';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(250, 125, 10, 0, Math.PI * 2, true);
+            ctx.fillStyle = 'yellow';
+            ctx.fill();
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(40, 140, 10, 5);
+            ctx.beginPath();
+            ctx.moveTo(50, 115);
+            ctx.lineTo(250, 115);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = 'black';
+            ctx.fillRect(120, 110, 20, 5);
+            ctx.fillRect(160, 110, 20, 5);
         }
     },
     created: function() {
@@ -87,6 +129,7 @@ createApp({
         fetch('/backend?operation=initcookie', { method: 'PUT' })
             .then(_ => this.loadBookings())
             .catch(error => this.showHttpErrorDialog(error));
+        setTimeout(() => this.drawCar(), 500);
     },
     setup() {
         const message = ref('Hello vue!')
