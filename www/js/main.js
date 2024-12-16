@@ -156,11 +156,13 @@ createApp({
             .then(_ => this.loadBookings())
             .catch(error => this.showHttpErrorDialog(error));
         setTimeout(() => this.drawCar(), 500);
-        if(window.location.hash) {
-            console.log(window.location.hash.substring(1));
-            this.setroute(window.location.hash.substring(1));
-        }
-        // addEventListener("hashchange", (event) => {});
+        let setRouteByHash = () => {
+            if(window.location.hash) {
+                this.setroute(window.location.hash.substring(1));
+            }
+        };
+        setRouteByHash();
+        window.addEventListener("hashchange", setRouteByHash);
     },
     setup() {
         const message = ref('Hello vue!')
