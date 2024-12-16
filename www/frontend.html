@@ -10,7 +10,7 @@
     <main id="app" class="w3-margin-bottom">
         <div class="w3-bar w3-black">
             <a type="button" class="w3-bar-item w3-button" v-on:click="() => setroute('')">Autovermietung</a>
-            <a type="button" v-on:click="() => setroute(item.route)" class="w3-bar-item w3-button w3-hide-small" v-for="item in navigationItems">{{item.display}}</a>
+            <a type="button" v-bind:tabindex="index + 1" v-on:keyup.enter="() => setroute(item.route)" v-on:click="() => setroute(item.route)" class="w3-bar-item w3-button w3-hide-small" v-for="(item, index) in navigationItems">{{item.display}}</a>
             <button class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" v-on:click="myFunction">&#9776;</button>
         </div>
         <div id="demo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium">
@@ -21,7 +21,7 @@
                 <h1 class="w3-center w3-margin-bottom">Autovermietung - Navigation</h1>
                 <p class="w3-center w3-large">Klicken Sie einen Abschnitt</p>
                 <ul class="w3-ul w3-card">
-                    <li type="button" v-on:click="() => setroute(item.route)" class="w3-bar clickable" v-for="item in navigationItems">
+                    <li type="button" v-on:click="() => setroute(item.route)" v-on:keyup.enter="() => setroute(item.route)" v-bind:tabindex="index + 1" class="w3-bar clickable" v-for="(item, index) in navigationItems">
                         <div class="w3-bar-item">
                             <span class="w3-large">{{item.display}}</span>
                         </div>
@@ -43,8 +43,7 @@
                 <h1 class="w3-center w3-margin-bottom">Autovermietung - Buchen (Eingabe)</h1>
                 <p class="w3-center w3-large">Wählen Sie ein Auto für die Buchung aus</p>
                 <ul class="w3-ul w3-card">
-                    <li type="button" v-on:click="() => setroute('selected-car', item)" class="w3-bar clickable"
-                        v-if="carList != null" v-for="item in carList">
+                    <li type="button" v-on:click="() => setroute('selected-car', item)" v-on:keyup.enter="() => setroute('selected-car', item)" class="w3-bar clickable" v-if="carList != null" v-for="(item, index) in carList" v-bind:tabindex="index + 1">
                         <span class="w3-bar-item w3-button w3-right">{{item.jahrgang}}</span>
                         <div class="w3-bar-item">
                             <span class="w3-large">{{item.marke}} <span v-if="item.verfuegbar == '1'"
@@ -69,26 +68,26 @@
                         <form id="bookingForm" class="w3-container">
                             <div class="w3-margin-top">
                                 <label>Name</label>
-                                <input id="input_name" v-on:input="validateInputName" required="required" minlength="3" v-model="name" class="w3-input w3-border w3-round-large" type="text" />
+                                <input id="input_name" tabindex="1" v-on:input="validateInputName" required="required" minlength="3" v-model="name" class="w3-input w3-border w3-round-large" type="text" />
                                 <p id="error_input_name" class="w3-text-red w3-small"></p>
                             </div>
                             <div class="w3-margin-top">
                                 <label>Datum</label>
-                                <input id="input_date" v-on:input="validateInputDate"  required="required" v-bind:min="new Date().toISOString().substring(0, 10)" v-bind:max="new Date(new Date().setMonth(new Date().getMonth() + 11)).toISOString().substring(0, 10)" v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
+                                <input id="input_date" tabindex="2" v-on:input="validateInputDate"  required="required" v-bind:min="new Date().toISOString().substring(0, 10)" v-bind:max="new Date(new Date().setMonth(new Date().getMonth() + 11)).toISOString().substring(0, 10)" v-model="datum" class="w3-input w3-border w3-round-large" type="date" />
                                 <p id="error_input_date" class="w3-text-red w3-small"></p>
                             </div>
                             <div class="w3-margin-top">
                                 <label>Dauer {{dauer}} Monate</label>
-                                <input id="input_dauer" v-on:input="validateInputDauer"  v-model="dauer" class="w3-input w3-border w3-round-large" type="range" min="1" max="12" step="1" required="required" />
+                                <input id="input_dauer" tabindex="3" v-on:input="validateInputDauer"  v-model="dauer" class="w3-input w3-border w3-round-large" type="range" min="1" max="12" step="1" required="required" />
                                 <p id="error_input_dauer" class="w3-text-red w3-small"></p>
                             </div>
                             <hr>
                             <p>Buchen unter {{name}} am {{format_date(datum)}} für {{dauer}} Monate</p>
                         </form>
-                        <button v-bind:disabled="!(bookingFormNameValid && bookingFormDateValid && bookingFormDauerValid)" class="w3-button w3-block w3-green" v-on:click="book">+ Buchen</button>
+                        <button tabindex="4" v-bind:disabled="!(bookingFormNameValid && bookingFormDateValid && bookingFormDauerValid)" class="w3-button w3-block w3-green" v-on:click="book">+ Buchen</button>
                     </div>
                 </div><br /><br />
-                <a v-on:click="() => setroute('', null)" class="w3-margin-top clickable w3-text-blue">Zürick</a>
+                <a tabindex="5" v-on:keyup.enter="() => setroute('')" v-on:click="() => setroute('')" class="w3-margin-top clickable w3-text-blue">Zürick</a>
             </template>
             <template v-if="route == 'ausgabe'">
                 <h1 class="w3-center w3-margin-bottom">Autovermietung - getätigte Buchungen (Ausgabe)</h1>
@@ -115,7 +114,7 @@
                 <h2>Erfolgreich gebucht</h2>
               </header>
               <div class="w3-container w3-padding">
-                <a type="button" class="w3-text-blue clickable" v-on:click="() => setroute('ausgabe')">Zur getätigten Buchungen</a>
+                <a type="button" tabindex="5" class="w3-text-blue clickable" v-on:keyup.enter="() => setroute('ausgabe')" v-on:click="() => setroute('ausgabe')">Zur getätigten Buchungen</a>
               </div>
             </div>
         </div>
