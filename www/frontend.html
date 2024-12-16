@@ -35,7 +35,7 @@
                 <h2>Buchung - Eingabebereich</h2>
                 <p>Hier wählt man zuerst ein Auto aus, welches man buchen möchte. Wenn man klickt, wird man zu einer Abschnitt weitergeleitet, wo man seine Details zur Buchung eingeben kann und danach abschliessen kann.</p>
                 <img src="img/booking.gif" class="w3-image w3-border" />
-                <h2>Buchung - Ausgabebereich</h2>
+                <h2>Getätigte Buchungen - Ausgabebereich</h2>
                 <p>Hier sieht man alle getätigte Buchungen. Diese Buchungen werden abhängig von der gespeicherten Cookie angezeigt.</p>
                 <img src="img/alle_buchungen.png" class="w3-image w3-border" />
             </template>
@@ -55,7 +55,7 @@
                 </ul>
             </template>
             <template v-if="route == 'selected-car'">
-                <div class="w3-panel w3-border w3-border-red w3-pale-red w3-round-large" v-if="param.verfuegbar != '1'">
+                <div class="w3-panel w3-border w3-border-red w3-pale-red w3-round-large" v-if="param?.verfuegbar != '1'">
                     <h1>Nicht verfügbar</h1>
                     <p>Das Auto ist leider schon ausgebucht. Versuchen Sie später einmal.</p>
                 </div>

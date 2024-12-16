@@ -158,6 +158,7 @@ createApp({
         setTimeout(() => this.drawCar(), 500);
         let setRouteByHash = () => {
             if(window.location.hash) {
+                if(window.location.hash.substring(1) == this.route) return;
                 this.setroute(window.location.hash.substring(1));
             }
         };
