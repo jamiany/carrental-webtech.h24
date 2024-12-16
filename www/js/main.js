@@ -28,7 +28,7 @@ createApp({
             if (!value) return ''
             return new Date(value).toLocaleDateString("de-CH");
         },  
-        myFunction() {
+        toggleNavigationBar() {
             var x = document.getElementById("demo");
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";

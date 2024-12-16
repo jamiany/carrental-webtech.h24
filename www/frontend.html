@@ -11,7 +11,7 @@
         <div class="w3-bar w3-black">
             <a type="button" class="w3-bar-item w3-button" v-on:click="() => setroute('')">Autovermietung</a>
             <a type="button" v-bind:tabindex="index + 1" v-on:keyup.enter="() => setroute(item.route)" v-on:click="() => setroute(item.route)" class="w3-bar-item w3-button w3-hide-small" v-for="(item, index) in navigationItems">{{item.display}}</a>
-            <button class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" v-on:click="myFunction">&#9776;</button>
+            <button class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" v-on:click="toggleNavigationBar">&#9776;</button>
         </div>
         <div id="demo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium">
             <a type="button" v-on:click="() => setroute(item.route)" class="w3-bar-item w3-button" v-for="item in navigationItems">{{item.display}}</a>
